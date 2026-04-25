@@ -1,4 +1,5 @@
 import SupportLayout from "@/components/layout/SupportLayout";
+import LoginGate from "@/components/auth/LoginGate";
 
 const customers = [
   { id: "C001", name: "Riya Sharma", email: "riya@gmail.com", phone: "+91 98001 23456", orders: 14, spent: "₹18,400", status: "Active", joined: "Jan 2024" },
@@ -15,10 +16,9 @@ const statusStyle: Record<string, string> = {
   Pending: "bg-yellow-50 text-yellow-700 border border-yellow-200",
 };
 
-export default function CustomersPage() {
+function CustomersContent() {
   return (
     <SupportLayout title="Customer Management" subtitle="Panel 1 — View and manage all customers">
-      {/* Stats */}
       <div className="grid grid-cols-4 gap-5 mb-7">
         {[
           { label: "Total Customers", value: "24,831", icon: "👤", color: "text-blue-600", bg: "bg-blue-50" },
@@ -33,25 +33,19 @@ export default function CustomersPage() {
           </div>
         ))}
       </div>
-
-      {/* Table */}
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <input type="text" placeholder="🔍  Search customers..." className="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 w-64 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" />
+            <input type="text" placeholder="🔍  Search customers..." className="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 w-64 focus:outline-none focus:border-blue-400" />
             <select className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none bg-white">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Blocked</option>
-              <option>Pending</option>
+              <option>All Status</option><option>Active</option><option>Blocked</option><option>Pending</option>
             </select>
           </div>
           <div className="flex gap-2">
-            <button className="border border-gray-200 text-gray-600 text-sm px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">⬇ Export</button>
-            <button className="bg-green-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">+ Add Customer</button>
+            <button className="border border-gray-200 text-gray-600 text-sm px-4 py-2 rounded-lg hover:bg-gray-50">⬇ Export</button>
+            <button className="bg-green-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-700">+ Add Customer</button>
           </div>
         </div>
-
         <table className="w-full">
           <thead>
             <tr className="text-[11px] text-gray-400 uppercase tracking-wider bg-gray-50 border-b border-gray-100">
@@ -70,43 +64,51 @@ export default function CustomersPage() {
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-sm font-bold text-blue-700">{c.name.charAt(0)}</div>
-                    <div>
-                      <div className="text-sm font-semibold text-gray-900">{c.name}</div>
-                      <div className="text-xs text-gray-400">{c.email}</div>
-                    </div>
+                    <div><div className="text-sm font-semibold text-gray-900">{c.name}</div><div className="text-xs text-gray-400">{c.email}</div></div>
                   </div>
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-600">{c.phone}</td>
-                <td className="px-4 py-4 text-sm font-semibold text-gray-800">{c.orders}</td>
+                <td className="px-4 py-4 text-sm font-semibold">{c.orders}</td>
                 <td className="px-4 py-4 text-sm font-semibold text-green-600">{c.spent}</td>
-                <td className="px-4 py-4">
-                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusStyle[c.status]}`}>{c.status}</span>
-                </td>
+                <td className="px-4 py-4"><span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusStyle[c.status]}`}>{c.status}</span></td>
                 <td className="px-4 py-4 text-sm text-gray-400">{c.joined}</td>
                 <td className="px-4 py-4">
                   <div className="flex gap-2">
-                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">View</button>
-                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">Orders</button>
+                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600">View</button>
+                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600">Orders</button>
                     {c.status === "Active"
-                      ? <button className="text-xs bg-red-50 border border-red-200 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition-colors">Block</button>
-                      : <button className="text-xs bg-green-50 border border-green-200 text-green-600 px-3 py-1.5 rounded-lg hover:bg-green-100 transition-colors">Unblock</button>
-                    }
+                      ? <button className="text-xs bg-red-50 border border-red-200 text-red-600 px-3 py-1.5 rounded-lg">Block</button>
+                      : <button className="text-xs bg-green-50 border border-green-200 text-green-600 px-3 py-1.5 rounded-lg">Unblock</button>}
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
         <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
           <div className="text-xs text-gray-400">Showing 6 of 24,831 customers</div>
           <div className="flex gap-1">
-            {["←", "1", "2", "3", "...", "→"].map((p, i) => (
-              <button key={i} className={`w-8 h-8 rounded-lg text-xs transition-colors ${p === "1" ? "bg-green-600 text-white" : "border border-gray-200 text-gray-500 hover:bg-gray-50"}`}>{p}</button>
+            {["←","1","2","3","...","→"].map((p,i)=>(
+              <button key={i} className={`w-8 h-8 rounded-lg text-xs ${p==="1"?"bg-green-600 text-white":"border border-gray-200 text-gray-500 hover:bg-gray-50"}`}>{p}</button>
             ))}
           </div>
         </div>
       </div>
     </SupportLayout>
+  );
+}
+
+export default function CustomersPage() {
+  return (
+    <LoginGate
+      role="Customer Support Executive"
+      department="Support Console — Panel 1"
+      icon="👤"
+      accent="#16a34a"
+      accentLight="#f0fdf4"
+      storageKey="customer-support"
+    >
+      <CustomersContent />
+    </LoginGate>
   );
 }

@@ -1,4 +1,5 @@
 import SupportLayout from "@/components/layout/SupportLayout";
+import LoginGate from "@/components/auth/LoginGate";
 
 const tailors = [
   { id: "T001", name: "Mohammed Ali", city: "Mumbai", orders: 312, rating: 4.8, earnings: "₹1,24,000", status: "Active", kyc: true },
@@ -16,9 +17,9 @@ const statusStyle: Record<string, string> = {
   "Pending KYC": "bg-gray-100 text-gray-600 border border-gray-200",
 };
 
-export default function TailorsPage() {
+function TailorsContent() {
   return (
-    <SupportLayout title="Tailor Management" subtitle="Panel 2 — Manage all tailors, payouts & performance">
+    <SupportLayout title="Tailor Management" subtitle="Panel 2 — Manage tailors, payouts & performance">
       <div className="grid grid-cols-4 gap-5 mb-7">
         {[
           { label: "Total Tailors", value: "1,204", icon: "✂️", color: "text-purple-600", bg: "bg-purple-50" },
@@ -33,82 +34,55 @@ export default function TailorsPage() {
           </div>
         ))}
       </div>
-
       <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
         <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <input type="text" placeholder="🔍  Search tailors..." className="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 w-64 focus:outline-none focus:border-purple-400" />
-            <select className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none bg-white">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Warning</option>
-              <option>Suspended</option>
-              <option>Pending KYC</option>
-            </select>
-          </div>
-          <button className="bg-purple-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors">+ Add Tailor</button>
+          <input type="text" placeholder="🔍  Search tailors..." className="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 w-64 focus:outline-none focus:border-purple-400" />
+          <button className="bg-purple-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-purple-700">+ Add Tailor</button>
         </div>
-
         <table className="w-full">
           <thead>
             <tr className="text-[11px] text-gray-400 uppercase tracking-wider bg-gray-50 border-b border-gray-100">
-              <th className="text-left px-6 py-3">Tailor</th>
-              <th className="text-left px-4 py-3">City</th>
-              <th className="text-left px-4 py-3">Orders</th>
-              <th className="text-left px-4 py-3">Rating</th>
-              <th className="text-left px-4 py-3">Earnings</th>
-              <th className="text-left px-4 py-3">KYC</th>
-              <th className="text-left px-4 py-3">Status</th>
-              <th className="text-left px-4 py-3">Actions</th>
+              <th className="text-left px-6 py-3">Tailor</th><th className="text-left px-4 py-3">City</th>
+              <th className="text-left px-4 py-3">Orders</th><th className="text-left px-4 py-3">Rating</th>
+              <th className="text-left px-4 py-3">Earnings</th><th className="text-left px-4 py-3">KYC</th>
+              <th className="text-left px-4 py-3">Status</th><th className="text-left px-4 py-3">Actions</th>
             </tr>
           </thead>
           <tbody>
             {tailors.map((t) => (
-              <tr key={t.id} className="border-t border-gray-50 hover:bg-gray-50 transition-colors">
+              <tr key={t.id} className="border-t border-gray-50 hover:bg-gray-50">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
                     <div className="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-sm font-bold text-purple-700">{t.name.charAt(0)}</div>
-                    <div>
-                      <div className="text-sm font-semibold text-gray-900">{t.name}</div>
-                      <div className="text-xs text-gray-400">{t.id}</div>
-                    </div>
+                    <div><div className="text-sm font-semibold text-gray-900">{t.name}</div><div className="text-xs text-gray-400">{t.id}</div></div>
                   </div>
                 </td>
                 <td className="px-4 py-4 text-sm text-gray-600">{t.city}</td>
-                <td className="px-4 py-4 text-sm font-semibold text-gray-800">{t.orders}</td>
-                <td className="px-4 py-4">
-                  {t.rating ? <span className="text-sm font-semibold text-gray-800">★ {t.rating}</span> : <span className="text-gray-300 text-sm">—</span>}
-                </td>
+                <td className="px-4 py-4 text-sm font-semibold">{t.orders}</td>
+                <td className="px-4 py-4 text-sm font-semibold">{t.rating ? `★ ${t.rating}` : "—"}</td>
                 <td className="px-4 py-4 text-sm font-semibold text-green-600">{t.earnings}</td>
-                <td className="px-4 py-4">
-                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${t.kyc ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-600 border border-red-200"}`}>
-                    {t.kyc ? "✓ Verified" : "✗ Pending"}
-                  </span>
-                </td>
-                <td className="px-4 py-4">
-                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusStyle[t.status]}`}>{t.status}</span>
-                </td>
+                <td className="px-4 py-4"><span className={`text-xs px-2.5 py-1 rounded-full font-medium ${t.kyc ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-600 border border-red-200"}`}>{t.kyc ? "✓ Verified" : "✗ Pending"}</span></td>
+                <td className="px-4 py-4"><span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusStyle[t.status]}`}>{t.status}</span></td>
                 <td className="px-4 py-4">
                   <div className="flex gap-2">
-                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600">View</button>
-                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600">Payout</button>
-                    <button className="text-xs bg-yellow-50 border border-yellow-200 text-yellow-700 px-3 py-1.5 rounded-lg hover:bg-yellow-100">Warn</button>
+                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg text-gray-600">View</button>
+                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg text-gray-600">Payout</button>
+                    <button className="text-xs bg-yellow-50 border border-yellow-200 text-yellow-700 px-3 py-1.5 rounded-lg">Warn</button>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-
-        <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
-          <div className="text-xs text-gray-400">Showing 6 of 1,204 tailors</div>
-          <div className="flex gap-1">
-            {["←", "1", "2", "3", "→"].map((p, i) => (
-              <button key={i} className={`w-8 h-8 rounded-lg text-xs transition-colors ${p === "1" ? "bg-purple-600 text-white" : "border border-gray-200 text-gray-500 hover:bg-gray-50"}`}>{p}</button>
-            ))}
-          </div>
-        </div>
       </div>
     </SupportLayout>
+  );
+}
+
+export default function TailorsPage() {
+  return (
+    <LoginGate role="Tailor Manager" department="Support Console — Panel 2" icon="✂️" accent="#7c3aed" accentLight="#f5f3ff" storageKey="tailor-manager">
+      <TailorsContent />
+    </LoginGate>
   );
 }

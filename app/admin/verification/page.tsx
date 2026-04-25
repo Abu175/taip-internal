@@ -1,4 +1,5 @@
 import AdminLayout from "@/components/layout/AdminLayout";
+import LoginGate from "@/components/auth/LoginGate";
 
 const queue = [
   { id: "KYC001", name: "Kabir Textiles", type: "Vendor", docs: ["GST Certificate", "Aadhaar", "Bank Details"], submitted: "Today, 9:14 AM", status: "Pending" },
@@ -7,7 +8,7 @@ const queue = [
   { id: "KYC004", name: "Nisha Verma", type: "Tailor", docs: ["Aadhaar", "Bank Details"], submitted: "Yesterday", status: "Pending" },
 ];
 
-export default function VerificationPage() {
+function VerificationContent() {
   return (
     <AdminLayout title="KYC Verification" subtitle="Panel 2 — Review and approve KYC documents">
       <div className="grid grid-cols-4 gap-5 mb-7">
@@ -24,7 +25,6 @@ export default function VerificationPage() {
           </div>
         ))}
       </div>
-
       <div className="flex flex-col gap-4">
         {queue.map((item) => (
           <div key={item.id} className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
@@ -36,28 +36,30 @@ export default function VerificationPage() {
                   <div className="text-xs text-gray-400 mt-0.5">{item.id} · {item.type} · Submitted {item.submitted}</div>
                 </div>
               </div>
-              <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${item.status === "Pending" ? "bg-yellow-50 text-yellow-700 border-yellow-200" : "bg-blue-50 text-blue-700 border-blue-200"}`}>
-                {item.status}
-              </span>
+              <span className={`text-xs px-2.5 py-1 rounded-full font-medium border ${item.status==="Pending"?"bg-yellow-50 text-yellow-700 border-yellow-200":"bg-blue-50 text-blue-700 border-blue-200"}`}>{item.status}</span>
             </div>
-
             <div className="mt-4 flex items-center gap-3">
               <span className="text-xs text-gray-500 font-medium">Documents:</span>
               {item.docs.map((doc) => (
-                <span key={doc} className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full border border-gray-200 cursor-pointer hover:bg-gray-200 transition-colors">
-                  📄 {doc}
-                </span>
+                <span key={doc} className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full border border-gray-200 cursor-pointer hover:bg-gray-200">📄 {doc}</span>
               ))}
             </div>
-
             <div className="mt-4 flex gap-3">
-              <button className="bg-green-600 text-white text-sm px-5 py-2 rounded-lg hover:bg-green-700 transition-colors">✓ Approve</button>
-              <button className="bg-red-50 border border-red-200 text-red-600 text-sm px-5 py-2 rounded-lg hover:bg-red-100 transition-colors">✗ Reject</button>
-              <button className="bg-gray-50 border border-gray-200 text-gray-600 text-sm px-5 py-2 rounded-lg hover:bg-gray-100 transition-colors">📩 Request More Docs</button>
+              <button className="bg-green-600 text-white text-sm px-5 py-2 rounded-lg hover:bg-green-700">✓ Approve</button>
+              <button className="bg-red-50 border border-red-200 text-red-600 text-sm px-5 py-2 rounded-lg hover:bg-red-100">✗ Reject</button>
+              <button className="bg-gray-50 border border-gray-200 text-gray-600 text-sm px-5 py-2 rounded-lg hover:bg-gray-100">📩 Request More Docs</button>
             </div>
           </div>
         ))}
       </div>
     </AdminLayout>
+  );
+}
+
+export default function VerificationPage() {
+  return (
+    <LoginGate role="KYC Executive" department="Super Admin — Panel 2" icon="✅" accent="#2563eb" accentLight="#eff6ff" storageKey="kyc-executive">
+      <VerificationContent />
+    </LoginGate>
   );
 }
