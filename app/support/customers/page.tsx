@@ -1,4 +1,4 @@
-import ConsoleLayout from "@/components/layout/ConsoleLayout";
+import SupportLayout from "@/components/layout/SupportLayout";
 
 const customers = [
   { id: "C001", name: "Riya Sharma", email: "riya@gmail.com", phone: "+91 98001 23456", orders: 14, spent: "₹18,400", status: "Active", joined: "Jan 2024" },
@@ -9,36 +9,37 @@ const customers = [
   { id: "C006", name: "Kavya Reddy", email: "kavya@gmail.com", phone: "+91 96543 21098", orders: 1, spent: "₹750", status: "Pending", joined: "Today" },
 ];
 
+const statusStyle: Record<string, string> = {
+  Active: "bg-green-50 text-green-700 border border-green-200",
+  Blocked: "bg-red-50 text-red-700 border border-red-200",
+  Pending: "bg-yellow-50 text-yellow-700 border border-yellow-200",
+};
+
 export default function CustomersPage() {
   return (
-    <ConsoleLayout title="Customer Management" subtitle="Console 3 › Panel 1 — Manage all customers">
-      {/* Top Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-7">
+    <SupportLayout title="Customer Management" subtitle="Panel 1 — View and manage all customers">
+      {/* Stats */}
+      <div className="grid grid-cols-4 gap-5 mb-7">
         {[
-          { label: "Total Customers", value: "24,831", icon: "👤", color: "text-blue-400" },
-          { label: "Active", value: "23,104", icon: "✅", color: "text-green-400" },
-          { label: "Blocked", value: "312", icon: "🚫", color: "text-red-400" },
-          { label: "Open Tickets", value: "87", icon: "🎫", color: "text-yellow-400" },
+          { label: "Total Customers", value: "24,831", icon: "👤", color: "text-blue-600", bg: "bg-blue-50" },
+          { label: "Active", value: "23,104", icon: "✅", color: "text-green-600", bg: "bg-green-50" },
+          { label: "Blocked", value: "312", icon: "🚫", color: "text-red-600", bg: "bg-red-50" },
+          { label: "Open Tickets", value: "87", icon: "🎫", color: "text-yellow-600", bg: "bg-yellow-50" },
         ].map((s) => (
-          <div key={s.label} className="bg-[#161b27] border border-[#2a3044] rounded-xl p-5">
-            <div className="text-2xl mb-1">{s.icon}</div>
+          <div key={s.label} className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm">
+            <div className={`w-10 h-10 ${s.bg} rounded-lg flex items-center justify-center text-xl mb-3`}>{s.icon}</div>
             <div className={`text-2xl font-bold ${s.color}`}>{s.value}</div>
-            <div className="text-xs text-[#64748b] mt-1">{s.label}</div>
+            <div className="text-xs text-gray-400 mt-1">{s.label}</div>
           </div>
         ))}
       </div>
 
-      {/* Table Card */}
-      <div className="bg-[#161b27] rounded-xl border border-[#2a3044]">
-        {/* Toolbar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-[#2a3044]">
+      {/* Table */}
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <div className="flex items-center gap-3">
-            <input
-              type="text"
-              placeholder="Search customers..."
-              className="bg-[#1e2535] border border-[#2a3044] rounded-lg px-4 py-2 text-sm text-white placeholder-[#64748b] w-64 focus:outline-none focus:border-[#4f6ef7]"
-            />
-            <select className="bg-[#1e2535] border border-[#2a3044] rounded-lg px-3 py-2 text-sm text-[#94a3b8] focus:outline-none">
+            <input type="text" placeholder="🔍  Search customers..." className="border border-gray-200 rounded-lg px-4 py-2 text-sm text-gray-700 placeholder-gray-400 w-64 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-100" />
+            <select className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none bg-white">
               <option>All Status</option>
               <option>Active</option>
               <option>Blocked</option>
@@ -46,15 +47,14 @@ export default function CustomersPage() {
             </select>
           </div>
           <div className="flex gap-2">
-            <button className="bg-[#1e2535] border border-[#2a3044] text-sm px-4 py-2 rounded-lg hover:bg-[#2a3044] transition-colors">⬇ Export</button>
-            <button className="bg-[#4f6ef7] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#3d5ce5] transition-colors">+ Add Customer</button>
+            <button className="border border-gray-200 text-gray-600 text-sm px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors">⬇ Export</button>
+            <button className="bg-green-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">+ Add Customer</button>
           </div>
         </div>
 
-        {/* Table */}
         <table className="w-full">
           <thead>
-            <tr className="text-[11px] text-[#64748b] uppercase tracking-wider bg-[#1a2030]">
+            <tr className="text-[11px] text-gray-400 uppercase tracking-wider bg-gray-50 border-b border-gray-100">
               <th className="text-left px-6 py-3">Customer</th>
               <th className="text-left px-4 py-3">Phone</th>
               <th className="text-left px-4 py-3">Orders</th>
@@ -66,36 +66,30 @@ export default function CustomersPage() {
           </thead>
           <tbody>
             {customers.map((c) => (
-              <tr key={c.id} className="border-t border-[#2a3044] hover:bg-[#1e2535] transition-colors">
+              <tr key={c.id} className="border-t border-gray-50 hover:bg-gray-50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[#4f6ef7]/20 flex items-center justify-center text-xs font-bold text-[#4f6ef7]">
-                      {c.name.charAt(0)}
-                    </div>
+                    <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-sm font-bold text-blue-700">{c.name.charAt(0)}</div>
                     <div>
-                      <div className="text-sm font-medium">{c.name}</div>
-                      <div className="text-xs text-[#64748b]">{c.email}</div>
+                      <div className="text-sm font-semibold text-gray-900">{c.name}</div>
+                      <div className="text-xs text-gray-400">{c.email}</div>
                     </div>
                   </div>
                 </td>
-                <td className="px-4 py-4 text-sm text-[#94a3b8]">{c.phone}</td>
-                <td className="px-4 py-4 text-sm font-medium">{c.orders}</td>
-                <td className="px-4 py-4 text-sm font-medium text-green-400">{c.spent}</td>
+                <td className="px-4 py-4 text-sm text-gray-600">{c.phone}</td>
+                <td className="px-4 py-4 text-sm font-semibold text-gray-800">{c.orders}</td>
+                <td className="px-4 py-4 text-sm font-semibold text-green-600">{c.spent}</td>
                 <td className="px-4 py-4">
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    c.status === "Active" ? "bg-green-500/15 text-green-400" :
-                    c.status === "Blocked" ? "bg-red-500/15 text-red-400" :
-                    "bg-yellow-500/15 text-yellow-400"
-                  }`}>{c.status}</span>
+                  <span className={`text-xs px-2.5 py-1 rounded-full font-medium ${statusStyle[c.status]}`}>{c.status}</span>
                 </td>
-                <td className="px-4 py-4 text-sm text-[#64748b]">{c.joined}</td>
+                <td className="px-4 py-4 text-sm text-gray-400">{c.joined}</td>
                 <td className="px-4 py-4">
                   <div className="flex gap-2">
-                    <button className="text-xs bg-[#1e2535] px-3 py-1.5 rounded-md hover:bg-[#2a3044] transition-colors">View</button>
-                    <button className="text-xs bg-[#1e2535] px-3 py-1.5 rounded-md hover:bg-[#2a3044] transition-colors">Orders</button>
+                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">View</button>
+                    <button className="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 text-gray-600 transition-colors">Orders</button>
                     {c.status === "Active"
-                      ? <button className="text-xs bg-red-500/15 text-red-400 px-3 py-1.5 rounded-md hover:bg-red-500/25 transition-colors">Block</button>
-                      : <button className="text-xs bg-green-500/15 text-green-400 px-3 py-1.5 rounded-md hover:bg-green-500/25 transition-colors">Unblock</button>
+                      ? <button className="text-xs bg-red-50 border border-red-200 text-red-600 px-3 py-1.5 rounded-lg hover:bg-red-100 transition-colors">Block</button>
+                      : <button className="text-xs bg-green-50 border border-green-200 text-green-600 px-3 py-1.5 rounded-lg hover:bg-green-100 transition-colors">Unblock</button>
                     }
                   </div>
                 </td>
@@ -104,16 +98,15 @@ export default function CustomersPage() {
           </tbody>
         </table>
 
-        {/* Pagination */}
-        <div className="flex items-center justify-between px-6 py-4 border-t border-[#2a3044]">
-          <div className="text-xs text-[#64748b]">Showing 6 of 24,831 customers</div>
+        <div className="flex items-center justify-between px-6 py-4 border-t border-gray-100">
+          <div className="text-xs text-gray-400">Showing 6 of 24,831 customers</div>
           <div className="flex gap-1">
-            {["←", "1", "2", "3", "...", "248", "→"].map((p) => (
-              <button key={p} className={`w-8 h-8 rounded-lg text-xs transition-colors ${p === "1" ? "bg-[#4f6ef7] text-white" : "bg-[#1e2535] text-[#94a3b8] hover:bg-[#2a3044]"}`}>{p}</button>
+            {["←", "1", "2", "3", "...", "→"].map((p, i) => (
+              <button key={i} className={`w-8 h-8 rounded-lg text-xs transition-colors ${p === "1" ? "bg-green-600 text-white" : "border border-gray-200 text-gray-500 hover:bg-gray-50"}`}>{p}</button>
             ))}
           </div>
         </div>
       </div>
-    </ConsoleLayout>
+    </SupportLayout>
   );
 }

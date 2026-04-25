@@ -1,137 +1,145 @@
-import ConsoleLayout from "@/components/layout/ConsoleLayout";
+import Link from "next/link";
 
-const stats = [
-  { label: "Total Customers", value: "24,831", change: "+12%", icon: "👤", color: "bg-blue-500/10 border-blue-500/20", text: "text-blue-400" },
-  { label: "Active Tailors", value: "1,204", change: "+5%", icon: "✂️", color: "bg-purple-500/10 border-purple-500/20", text: "text-purple-400" },
-  { label: "Prime Tailors", value: "186", change: "+2%", icon: "⭐", color: "bg-yellow-500/10 border-yellow-500/20", text: "text-yellow-400" },
-  { label: "Vendors", value: "438", change: "+8%", icon: "🏪", color: "bg-green-500/10 border-green-500/20", text: "text-green-400" },
-  { label: "Orders Today", value: "3,920", change: "+18%", icon: "📦", color: "bg-orange-500/10 border-orange-500/20", text: "text-orange-400" },
-  { label: "Revenue Today", value: "₹2.4L", change: "+22%", icon: "💰", color: "bg-pink-500/10 border-pink-500/20", text: "text-pink-400" },
+const consoles = [
+  {
+    id: "01",
+    title: "Tech & Infrastructure",
+    desc: "Backend, Hosting, App Management, AI Models, Charges & Billing",
+    href: "/tech/backend",
+    icon: "🖥️",
+    accent: "#3b5bdb",
+    bg: "#eef2ff",
+    border: "#c5d0fc",
+    tags: ["Backend", "Hosting", "App", "AI Models", "Billing"],
+  },
+  {
+    id: "02",
+    title: "Super Admin",
+    desc: "Security Center, KYC Verification, Platform Controls & Approvals",
+    href: "/admin/security",
+    icon: "🔐",
+    accent: "#c92a2a",
+    bg: "#fff5f5",
+    border: "#ffc9c9",
+    tags: ["Security", "KYC", "Verification", "Controls"],
+  },
+  {
+    id: "03",
+    title: "Support Console",
+    desc: "Customer, Tailor, Prime Tailors, Manufacturer & Vendor Management",
+    href: "/support/customers",
+    icon: "🎧",
+    accent: "#2f9e44",
+    bg: "#ebfbee",
+    border: "#b2f2bb",
+    tags: ["Customers", "Tailors", "Prime", "Manufacturers", "Vendors"],
+  },
 ];
 
-const recentOrders = [
-  { id: "#ORD-9821", customer: "Riya Sharma", tailor: "Mohammed Ali", amount: "₹1,200", status: "In Progress", time: "2 min ago" },
-  { id: "#ORD-9820", customer: "Priya Mehta", tailor: "Suresh Kumar", amount: "₹850", status: "Completed", time: "8 min ago" },
-  { id: "#ORD-9819", customer: "Anjali Singh", tailor: "Rina Bose", amount: "₹2,400", status: "Placed", time: "15 min ago" },
-  { id: "#ORD-9818", customer: "Fatima Khan", tailor: "Deepak Nair", amount: "₹560", status: "Cancelled", time: "22 min ago" },
-  { id: "#ORD-9817", customer: "Sunita Patel", tailor: "Arjun Das", amount: "₹3,100", status: "Completed", time: "34 min ago" },
-];
-
-const statusColor: Record<string, string> = {
-  "In Progress": "bg-blue-500/15 text-blue-400",
-  "Completed": "bg-green-500/15 text-green-400",
-  "Placed": "bg-yellow-500/15 text-yellow-400",
-  "Cancelled": "bg-red-500/15 text-red-400",
-};
-
-const pendingVerifications = [
-  { name: "Kabir Textiles", type: "Vendor", submitted: "Today, 9:14 AM" },
-  { name: "Sana Boutique", type: "Prime Tailor", submitted: "Today, 8:50 AM" },
-  { name: "FastFabric Co.", type: "Manufacturer", submitted: "Yesterday" },
-];
-
-export default function Dashboard() {
+export default function Hub() {
   return (
-    <ConsoleLayout title="Dashboard" subtitle="Welcome back — here's what's happening today">
-      {/* Stats Grid */}
-      <div className="grid grid-cols-6 gap-4 mb-8">
-        {stats.map((s) => (
-          <div key={s.label} className={`rounded-xl border p-4 ${s.color}`}>
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-xl">{s.icon}</span>
-              <span className={`text-xs font-medium ${s.text}`}>{s.change}</span>
-            </div>
-            <div className={`text-2xl font-bold mb-1 ${s.text}`}>{s.value}</div>
-            <div className="text-xs text-[#64748b]">{s.label}</div>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Top Bar */}
+      <header className="border-b border-gray-100 px-12 py-5 flex items-center justify-between bg-white">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 bg-[#3b5bdb] rounded-xl flex items-center justify-center text-white font-bold text-sm">T</div>
+          <div>
+            <div className="font-bold text-gray-900 text-base leading-tight">TAIP Internal</div>
+            <div className="text-xs text-gray-400">Operations Hub</div>
           </div>
-        ))}
-      </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 text-xs text-gray-500">
+            <span className="w-2 h-2 rounded-full bg-green-400 inline-block"></span>
+            All systems online
+          </div>
+          <div className="flex items-center gap-2 bg-gray-50 rounded-full px-4 py-2 border border-gray-200">
+            <div className="w-6 h-6 rounded-full bg-[#3b5bdb] flex items-center justify-center text-white text-xs font-bold">A</div>
+            <span className="text-sm font-medium text-gray-700">Admin</span>
+          </div>
+        </div>
+      </header>
 
-      <div className="grid grid-cols-3 gap-6">
-        {/* Recent Orders */}
-        <div className="col-span-2 bg-[#161b27] rounded-xl border border-[#2a3044]">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[#2a3044]">
-            <h3 className="font-semibold text-sm">Recent Orders</h3>
-            <button className="text-xs text-[#4f6ef7] hover:underline">View all →</button>
+      {/* Hero */}
+      <div className="flex-1 flex flex-col items-center justify-center px-8 py-16">
+        <div className="text-center mb-14">
+          <div className="inline-block bg-[#eef2ff] text-[#3b5bdb] text-xs font-semibold px-4 py-1.5 rounded-full mb-4 border border-[#c5d0fc]">
+            Internal Operations Platform
           </div>
-          <table className="w-full">
-            <thead>
-              <tr className="text-[11px] text-[#64748b] uppercase tracking-wider">
-                <th className="text-left px-6 py-3">Order ID</th>
-                <th className="text-left px-4 py-3">Customer</th>
-                <th className="text-left px-4 py-3">Tailor</th>
-                <th className="text-left px-4 py-3">Amount</th>
-                <th className="text-left px-4 py-3">Status</th>
-                <th className="text-left px-4 py-3">Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentOrders.map((order) => (
-                <tr key={order.id} className="border-t border-[#2a3044] hover:bg-[#1e2535] transition-colors">
-                  <td className="px-6 py-3 text-xs font-mono text-[#4f6ef7]">{order.id}</td>
-                  <td className="px-4 py-3 text-sm">{order.customer}</td>
-                  <td className="px-4 py-3 text-sm text-[#94a3b8]">{order.tailor}</td>
-                  <td className="px-4 py-3 text-sm font-medium">{order.amount}</td>
-                  <td className="px-4 py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${statusColor[order.status]}`}>
-                      {order.status}
+          <h1 className="text-4xl font-bold text-gray-900 mb-3">Select a Console</h1>
+          <p className="text-gray-500 text-base max-w-lg mx-auto">
+            Each console is role-restricted. Choose your panel to start managing.
+          </p>
+        </div>
+
+        {/* Console Cards */}
+        <div className="grid grid-cols-3 gap-6 w-full max-w-5xl">
+          {consoles.map((c) => (
+            <Link key={c.id} href={c.href}>
+              <div
+                className="group rounded-2xl border-2 p-7 bg-white hover:shadow-lg transition-all duration-200 cursor-pointer h-full flex flex-col"
+                style={{ borderColor: c.border }}
+              >
+                {/* Console number */}
+                <div className="flex items-center justify-between mb-5">
+                  <span className="text-xs font-bold text-gray-300 tracking-widest">CONSOLE {c.id}</span>
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl"
+                    style={{ background: c.bg }}
+                  >
+                    {c.icon}
+                  </div>
+                </div>
+
+                {/* Title */}
+                <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-[#3b5bdb] transition-colors">
+                  {c.title}
+                </h2>
+                <p className="text-sm text-gray-500 mb-6 leading-relaxed flex-1">{c.desc}</p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {c.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs px-2.5 py-1 rounded-full font-medium"
+                      style={{ background: c.bg, color: c.accent }}
+                    >
+                      {tag}
                     </span>
-                  </td>
-                  <td className="px-4 py-3 text-xs text-[#64748b]">{order.time}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <div
+                  className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-all"
+                  style={{ background: c.bg, color: c.accent }}
+                >
+                  <span>Open Console</span>
+                  <span className="text-lg">→</span>
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
 
-        {/* Right Column */}
-        <div className="flex flex-col gap-5">
-          {/* Pending Verifications */}
-          <div className="bg-[#161b27] rounded-xl border border-[#2a3044]">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-[#2a3044]">
-              <h3 className="font-semibold text-sm">Pending KYC</h3>
-              <span className="text-xs bg-red-500/20 text-red-400 px-2 py-0.5 rounded-full">{pendingVerifications.length} new</span>
+        {/* Bottom Stats */}
+        <div className="grid grid-cols-5 gap-4 mt-14 w-full max-w-5xl">
+          {[
+            { label: "Customers", value: "24,831", icon: "👤" },
+            { label: "Tailors", value: "1,204", icon: "✂️" },
+            { label: "Prime Tailors", value: "186", icon: "⭐" },
+            { label: "Vendors", value: "438", icon: "🏪" },
+            { label: "Orders Today", value: "3,920", icon: "📦" },
+          ].map((s) => (
+            <div key={s.label} className="bg-white border border-gray-100 rounded-xl p-4 text-center shadow-sm">
+              <div className="text-xl mb-1">{s.icon}</div>
+              <div className="text-lg font-bold text-gray-900">{s.value}</div>
+              <div className="text-xs text-gray-400 mt-0.5">{s.label}</div>
             </div>
-            <div className="p-3 flex flex-col gap-2">
-              {pendingVerifications.map((v) => (
-                <div key={v.name} className="flex items-center justify-between bg-[#1e2535] rounded-lg px-4 py-3">
-                  <div>
-                    <div className="text-sm font-medium">{v.name}</div>
-                    <div className="text-xs text-[#64748b]">{v.type} · {v.submitted}</div>
-                  </div>
-                  <div className="flex gap-2">
-                    <button className="text-xs bg-green-500/15 text-green-400 px-2 py-1 rounded-md hover:bg-green-500/25 transition-colors">✓</button>
-                    <button className="text-xs bg-red-500/15 text-red-400 px-2 py-1 rounded-md hover:bg-red-500/25 transition-colors">✗</button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* System Health */}
-          <div className="bg-[#161b27] rounded-xl border border-[#2a3044]">
-            <div className="px-5 py-4 border-b border-[#2a3044]">
-              <h3 className="font-semibold text-sm">System Health</h3>
-            </div>
-            <div className="p-4 flex flex-col gap-3">
-              {[
-                { name: "API Gateway", status: "Operational", uptime: "99.9%" },
-                { name: "Payment Service", status: "Operational", uptime: "100%" },
-                { name: "Notification Service", status: "Degraded", uptime: "97.2%" },
-                { name: "Search Engine", status: "Operational", uptime: "99.7%" },
-              ].map((svc) => (
-                <div key={svc.name} className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className={`w-2 h-2 rounded-full ${svc.status === "Operational" ? "bg-green-400" : "bg-yellow-400"}`} />
-                    <span className="text-sm">{svc.name}</span>
-                  </div>
-                  <span className="text-xs text-[#64748b]">{svc.uptime}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
-    </ConsoleLayout>
+    </div>
   );
 }
