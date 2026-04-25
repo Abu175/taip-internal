@@ -11,7 +11,10 @@ interface LoginGateProps {
   storageKey: string;
 }
 
-// Demo credentials per role (in production replace with real auth)
+// Universal super admin (works on ALL panels)
+const SUPER_ADMIN = { email: "admin@taip.in", password: "admin" };
+
+// Role-specific credentials (in production replace with real auth)
 const DEMO_CREDENTIALS: Record<string, { email: string; password: string }> = {
   "customer-support":   { email: "support@taip.in",      password: "support123" },
   "tailor-manager":     { email: "tailor@taip.in",        password: "tailor123" },
@@ -49,7 +52,9 @@ export default function LoginGate({ children, role, department, icon, accent, ac
     setError("");
     setTimeout(() => {
       const creds = DEMO_CREDENTIALS[storageKey];
-      if (email === creds?.email && password === creds?.password) {
+      // Super admin OR role-specific login
+      if ((email === SUPER_ADMIN.email && password === SUPER_ADMIN.password) ||
+          (email === creds?.email && password === creds?.password)) {
         localStorage.setItem(`taip_session_${storageKey}`, "active");
         setLoggedIn(true);
       } else {
@@ -81,7 +86,9 @@ export default function LoginGate({ children, role, department, icon, accent, ac
         <div className="fixed top-0 right-0 z-50 flex items-center gap-2 m-3">
           <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-full px-3 py-1.5 shadow-sm text-xs text-gray-500">
             <span className="w-2 h-2 rounded-full bg-green-400"></span>
-            Logged in as <span className="font-semibold text-gray-800">{role}</span>
+            <span className="text-amber-500">👑</span> Logged in as <span className="font-semibold text-gray-800">Super Admin</span>
+            <span className="text-gray-400">|</span>
+            <span className="text-gray-400">{role}</span>
             <button onClick={handleLogout} className="ml-1 text-red-400 hover:text-red-600 font-medium">Logout</button>
           </div>
         </div>
@@ -161,10 +168,17 @@ export default function LoginGate({ children, role, department, icon, accent, ac
             </form>
 
             {/* Demo hint */}
-            <div className="mt-5 bg-gray-50 border border-gray-100 rounded-xl p-3">
-              <div className="text-[10px] text-gray-400 font-semibold mb-1 uppercase tracking-wider">Demo Credentials</div>
-              <div className="text-xs text-gray-600">📧 <span className="font-mono">{creds?.email}</span></div>
-              <div className="text-xs text-gray-600">🔑 <span className="font-mono">{creds?.password}</span></div>
+            <div className="mt-5 flex flex-col gap-3">
+              <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-3">
+                <div className="text-[10px] text-amber-600 font-bold mb-1 uppercase tracking-wider flex items-center gap-1">👑 Super Admin (Works on ALL panels)</div>
+                <div className="text-xs text-gray-700">📧 <span className="font-bold font-mono">{SUPER_ADMIN.email}</span></div>
+                <div className="text-xs text-gray-700">🔑 <span className="font-bold font-mono">{SUPER_ADMIN.password}</span></div>
+              </div>
+              <div className="bg-gray-50 border border-gray-100 rounded-xl p-3">
+                <div className="text-[10px] text-gray-400 font-semibold mb-1 uppercase tracking-wider">Role-Specific Login</div>
+                <div className="text-xs text-gray-600">📧 <span className="font-mono">{creds?.email}</span></div>
+                <div className="text-xs text-gray-600">🔑 <span className="font-mono">{creds?.password}</span></div>
+              </div>
             </div>
           </div>
         </div>
